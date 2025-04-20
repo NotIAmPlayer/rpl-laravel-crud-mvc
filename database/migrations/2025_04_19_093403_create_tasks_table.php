@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->dateTime('deadline')->nullable();
-            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
+            $table->enum('status', ['pending', 'progress', 'completed'])->default('pending');
+            $table->timestamps();
         });
 
         Schema::create('task_to', function (Blueprint $table) {
