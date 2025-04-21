@@ -24,11 +24,14 @@ class StaffController extends Controller
         $name = request()->input('name');
         $email = request()->input('email');
         $password = request()->input('password');
+        $made_at = now()->format("Y-m-d H:i:s");
 
         $staff = DB::table('users')->insert([
             'name' => $name,
             'email' => $email,
             'password' => Hash::make($password),
+            'created_at' => $made_at,
+            'updated_at' => $made_at,
         ]);
 
         return redirect()->route('staffs');
@@ -44,11 +47,13 @@ class StaffController extends Controller
         $name = request()->input('name');
         $email = request()->input('email');
         $password = request()->input('password');
+        $updated_at = now()->format('Y-m-d H:i:s');
 
         $staff = DB::table('users')->where('id', $id)->update([
             'name' => $name,
             'email' => $email,
             'password' => Hash::make($password),
+            'updated_at' => $updated_at,
         ]);
 
         return redirect()->route('staffs');
