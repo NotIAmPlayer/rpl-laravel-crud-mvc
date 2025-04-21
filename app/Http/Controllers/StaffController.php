@@ -12,4 +12,12 @@ class StaffController extends Controller
 
         return view('staff', ['staff' => $staff]);
     }
+
+    public function edit_staff($id) {
+        dd($id);
+    }
+
+    public function delete_staff($id) {
+        dd($id);
+    }
 }

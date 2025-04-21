@@ -72,31 +72,36 @@
                             {{ strlen($t->title) > 60 ? trim(substr($t->title, 0, 60)) . "..." : $t->title }}
                             <br class="mb-1" />
                             @if ($t->status == 'completed')
-                                <span class="bg-emerald-600 p-1 text-white rounded-full">Completed</span>
+                                <span class="bg-emerald-600 py-1 px-2 text-white rounded-full">Completed</span>
                             @elseif ($t->status == 'progress')
-                                <span class="bg-amber-600 p-1 text-white rounded-full">In Progress</span>
+                                <span class="bg-amber-600 py-1 px-2 text-white rounded-full">In Progress</span>
                             @elseif ($t->status == 'pending')
-                                <span class="bg-red-600 p-1 text-white rounded-full">Pending</span>
+                                <span class="bg-red-600 py-1 px-2 text-white rounded-full">Pending</span>
                             @endif
                         </td>
                         <td class="border-b-2 border-black p-2">
-                            {{ strlen($t->description) > 75 ? trim(substr($t->description, 0, 75)) . "..." : 
+                            {{ strlen($t->description) > 80 ? trim(substr($t->description, 0, 80)) . "..." : 
                             $t->description }}
                         </td>
                         <td class="border-b-2 border-black p-2">
                             {{ $t->deadline }}
                         </td>
                         <td class="border-b-2 border-black p-2 text-center">
-                            <a href="{{ route('staff.edit', $t->id) }}">
-                                <button class="w-5/12 bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-500">
-                                    Edit
-                                </button>
-                            </a>
-                            <form action="{{ route('staff.delete', $t->id) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="w-5/12 bg-red-600 text-white p-1.5 rounded-lg hover:bg-red-500">Delete</button>
-                            </form>
+                            @if (Route::has('tasks.edit'))
+                                <a href="{{ route('tasks.edit', $t->id) }}">
+                                    <button class="w-5/12 bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-500">
+                                        Edit
+                                    </button>
+                                </a>
+                            @endif
+
+                            @if (Route::has('tasks.delete'))
+                                <form action="{{ route('tasks.delete', $t->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-5/12 bg-red-600 text-white p-1.5 rounded-lg hover:bg-red-500">Delete</button>
+                                </form>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>

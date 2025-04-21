@@ -68,16 +68,21 @@
                             <td class="border-b-2 border-black p-2">{{ $s->name }}</td>
                             <td class="border-b-2 border-black p-2">{{ $s->email }}</td>
                             <td class="border-b-2 border-black p-2 text-center">
-                                <a href="{{ route('staff.edit', $s->id) }}">
-                                    <button class="w-5/12 bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-500">
-                                        Edit
-                                    </button>
-                                </a>
-                                <form action="{{ route('staff.delete', $s->id) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="w-5/12 bg-red-600 text-white p-1.5 rounded-lg hover:bg-red-500">Delete</button>
-                                </form>
+                                @if (Route::has('staff.edit'))
+                                    <a href="{{ route('staff.edit', $s->id) }}">
+                                        <button class="w-5/12 bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-500">
+                                            Edit
+                                        </button>
+                                    </a>
+                                @endif
+
+                                @if (Route::has('staff.delete'))
+                                    <form action="{{ route('staff.delete', $s->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="w-5/12 bg-red-600 text-white p-1.5 rounded-lg hover:bg-red-500">Delete</button>
+                                    </form>
+                                @endif
                         </tr>
                     @endforeach
                 </tbody>

@@ -12,4 +12,12 @@ class TaskController extends Controller
 
         return view('task', ['tasks' => $tasks]);
     }
+
+    public function edit_task($id) {
+        dd($id);
+    }
+
+    public function delete_task($id) {
+        dd($id);
+    }
 }
