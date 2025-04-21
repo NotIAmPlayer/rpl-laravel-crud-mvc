@@ -19,7 +19,7 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 lg:justify-center min-h-screen flex-col">
         <header class="w-full max-w-screen max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             <nav class="flex items-center justify-end gap-4 bg-[#202020]">
                 @if (Route::has('dashboard'))
@@ -50,61 +50,84 @@
         </header>
         <div class="flex items-center justify-center w-full p-6 lg:p-8 rounded-lg lg:grow">
             <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-6xl lg:flex-col">
-                <div class="flex items-end justify-between mb-2 lg:mb-4">
-                    <h1 class="text-3xl lg:text-5xl font-bold text-[#1b1b18] dark:text-[#EDEDEC] mb-2 lg:mb-4">
-                        All Staffs
-                    </h1>
-
-                    @if (Route::has('staffs.add'))
-                        <a href="{{ route('staffs.add') }}">
-                            <button class="cursor-pointer text-sm bg-green-600 text-white p-1.5 rounded-lg hover:bg-green-500">
-                                Add New Staff
-                            </button>
-                        </a>
+                <h1 class="text-3xl lg:text-5xl font-bold text-[#1b1b18] dark:text-[#EDEDEC] mb-2 lg:mb-4">
+                    {{ $staff != null ? 'Edit Staff' : 'Add New Staff' }}
+                </h1>
+                <form
+                    action="{{ $staff != null ? route('staffs.update', $staff->id) : route('staffs.save') }}"
+                    method="POST"
+                    class="flex flex-col gap-4 lg:gap-6"
+                >
+                    @csrf
+                    @if ($staff != null)
+                        @method('PUT')
                     @endif
-                </div>
-                <table class="w-full text-sm text-left">
-                    <thead>
-                        <tr class="text-center">
-                            <th class="bg-[#202020] text-white border-2 border-white p-2 w-1/12">ID</th>
-                            <th class="bg-[#202020] text-white border-2 border-white p-2 w-5/12">Name</th>
-                            <th class="bg-[#202020] text-white border-2 border-white p-2 w-4/12">E-mail</th>
-                            <th class="bg-[#202020] text-white border-2 border-white p-2 w-2/12">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($staff as $s)
-                            <tr>
-                                <td class="border-b-2 border-black p-2 text-center">
-                                    {{ $s->id }}
-                                </td>
-                                <td class="border-b-2 border-black p-2">
-                                    {{ $s->name }}
-                                </td>
-                                <td class="border-b-2 border-black p-2">
-                                    {{ $s->email }}
-                                </td>
-                                <td class="border-b-2 border-black p-2 select-none text-center">
-                                    @if (Route::has('staffs.edit'))
-                                        <a href="{{ route('staffs.edit', $s->id) }}">
-                                            <button class="w-5/12 cursor-pointer bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-500">
-                                                Edit
-                                            </button>
-                                        </a>
-                                    @endif
 
-                                    @if (Route::has('staffs.delete'))
-                                        <form action="{{ route('staffs.delete', $s->id) }}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="w-5/12 cursor-pointer bg-red-600 text-white p-1.5 rounded-lg hover:bg-red-500">Delete</button>
-                                        </form>
-                                    @endif
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                    <div class="flex flex-col gap-2">
+                        <label for="name" class="text-sm font-semibold text-[#1b1b18] dark:text-[#EDEDEC]">
+                            Name
+                        </label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            value="{{ $staff != null ? $staff->name : old('name') }}"
+                            class="border border-[#EDEDEC] rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-violet-900"
+                            required
+                        >
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="email" class="text-sm font-semibold text-[#1b1b18] dark:text-[#EDEDEC]">
+                            Email
+                        </label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            value="{{ $staff != null ? $staff->email : old('email') }}"
+                            class="border border-[#EDEDEC] rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-violet-900"
+                            required
+                        >
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <label for="password" class="text-sm font-semibold text-[#1b1b18] dark:text-[#EDEDEC]">
+                                {{ $staff != null ? 'New Password' : 'Password' }}
+                            </label>
+                            <button type="button" class="cursor-pointer text-sm font-semibold text-violet-900" onclick="toggleShowPassword()">Show/Hide Password</a>
+                        </div>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            value="{{ old('password') }}"
+                            class="border border-[#EDEDEC] rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-violet-900"
+                            required
+                        >
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="w-5/12 cursor-pointer bg-violet-900 text-white p-1.5 rounded-lg hover:bg-violet-700"
+                    >
+                        {{ $staff != null ? 'Update Staff' : 'Add Staff' }}
+                    </button>
+                </form>
             </main>
         </div>
     </body>
+    <script>
+        function toggleShowPassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordType = passwordInput.getAttribute('type');
+
+            if (passwordType === 'password') {
+                passwordInput.setAttribute('type', 'text');
+            } else {
+                passwordInput.setAttribute('type', 'password');
+            }
+        }
+    </script>
 </html>

@@ -29,9 +29,9 @@
                     Dashboard
                 </a>
 
-                @if (Route::has('staff'))
+                @if (Route::has('staffs'))
                     <a
-                        href="{{ route('staff') }}"
+                        href="{{ route('staffs') }}"
                         class="inline-block px-5 py-1.5 text-[#EDEDEC] hover:bg-linear-to-b from-black/0 to-violet-900 rounded-sm text-sm leading-normal"
                     >
                         Staffs
@@ -48,20 +48,22 @@
                 @endif
             </nav>
         </header>
-        <div class="container p-6 lg:p-8 rounded-lg">
-            <h1 class="text-3xl lg:text-5xl font-bold text-[#1b1b18] dark:text-[#EDEDEC] mb-2 lg:mb-4">
-                Dashboard
-            </h1>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-[#202020] p-4 rounded-lg shadow-lg">
-                    <h2 class="text-xl font-semibold text-[#EDEDEC]">Staff Members</h2>
-                    <p class="text-3xl font-bold text-[#EDEDEC]">{{ $staff }}</p>
+        <div class="flex items-center justify-center w-full p-6 lg:p-8 rounded-lg lg:grow">
+            <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-6xl lg:flex-col">
+                <h1 class="text-3xl lg:text-5xl font-bold text-[#1b1b18] dark:text-[#EDEDEC] mb-2 lg:mb-4">
+                    Dashboard
+                </h1>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-[#202020] p-4 rounded-lg shadow-lg">
+                        <h2 class="text-xl font-semibold text-[#EDEDEC]">Staff Members</h2>
+                        <p class="text-3xl font-bold text-[#EDEDEC]">{{ $staff }}</p>
+                    </div>
+                    <div class="bg-[#202020] p-4 rounded-lg shadow-lg">
+                        <h2 class="text-xl font-semibold text-[#EDEDEC]">Active Tasks</h2>
+                        <p class="text-3xl font-bold text-[#EDEDEC]">{{ $tasks }}</p>
+                    </div>
                 </div>
-                <div class="bg-[#202020] p-4 rounded-lg shadow-lg">
-                    <h2 class="text-xl font-semibold text-[#EDEDEC]">Active Tasks</h2>
-                    <p class="text-3xl font-bold text-[#EDEDEC]">{{ $tasks }}</p>
-                </div>
-            </div>
+            </main>
         </div>
     </body>
 </html>

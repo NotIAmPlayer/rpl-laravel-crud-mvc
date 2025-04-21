@@ -19,7 +19,7 @@
             </style>
         @endif
     </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 lg:justify-center min-h-screen flex-col">
         <header class="w-full max-w-screen max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             <nav class="flex items-center justify-end gap-4 bg-[#202020]">
                 @if (Route::has('dashboard'))
@@ -31,9 +31,9 @@
                 </a>
                 @endif
 
-                @if (Route::has('staff'))
+                @if (Route::has('staffs'))
                     <a
-                        href="{{ route('staff') }}"
+                        href="{{ route('staffs') }}"
                         class="inline-block px-5 py-1.5 text-[#EDEDEC] hover:bg-linear-to-b from-black/0 to-violet-900 rounded-sm text-sm leading-normal"
                     >
                         Staffs
@@ -48,64 +48,76 @@
                 </a>
             </nav>
         </header>
-        <div class="container p-6 lg:p-8 rounded-lg">
-            <h1 class="text-3xl lg:text-5xl font-bold text-[#1b1b18] dark:text-[#EDEDEC] mb-2 lg:mb-4">
-                All Tasks
-            </h1>
-            <table class="w-full text-sm text-left">
-                <thead>
-                    <tr class="text-center">
-                        <th class="bg-[#202020] text-white border-2 border-white p-2 w-1/12">ID</th>
-                        <th class="bg-[#202020] text-white border-2 border-white p-2 w-4/12">Title</th>
-                        <th class="bg-[#202020] text-white border-2 border-white p-2 w-3/12">Description</th>
-                        <th class="bg-[#202020] text-white border-2 border-white p-2 w-2/12">Deadline</th>
-                        <th class="bg-[#202020] text-white border-2 border-white p-2 w-2/12">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($tasks as $t)
-                    <tr>
-                        <td class="border-b-2 border-black p-2">
-                            {{ $t->id }}
-                        </td>
-                        <td class="border-b-2 border-black p-2">
-                            {{ strlen($t->title) > 60 ? trim(substr($t->title, 0, 60)) . "..." : $t->title }}
-                            <br class="mb-1" />
-                            @if ($t->status == 'completed')
-                                <span class="bg-emerald-600 py-1 px-2 text-white rounded-full">Completed</span>
-                            @elseif ($t->status == 'progress')
-                                <span class="bg-amber-600 py-1 px-2 text-white rounded-full">In Progress</span>
-                            @elseif ($t->status == 'pending')
-                                <span class="bg-red-600 py-1 px-2 text-white rounded-full">Pending</span>
-                            @endif
-                        </td>
-                        <td class="border-b-2 border-black p-2">
-                            {{ strlen($t->description) > 80 ? trim(substr($t->description, 0, 80)) . "..." : 
-                            $t->description }}
-                        </td>
-                        <td class="border-b-2 border-black p-2">
-                            {{ $t->deadline }}
-                        </td>
-                        <td class="border-b-2 border-black p-2 text-center">
-                            @if (Route::has('tasks.edit'))
-                                <a href="{{ route('tasks.edit', $t->id) }}">
-                                    <button class="w-5/12 bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-500">
-                                        Edit
-                                    </button>
-                                </a>
-                            @endif
+        <div class="flex items-center justify-center w-full p-6 lg:p-8 rounded-lg lg:grow">
+            <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-6xl lg:flex-col">
+                <div class="flex items-end justify-between mb-2 lg:mb-4">
+                    <h1 class="text-3xl lg:text-5xl font-bold text-[#1b1b18] dark:text-[#EDEDEC]">
+                        All Tasks
+                    </h1>
 
-                            @if (Route::has('tasks.delete'))
-                                <form action="{{ route('tasks.delete', $t->id) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="w-5/12 bg-red-600 text-white p-1.5 rounded-lg hover:bg-red-500">Delete</button>
-                                </form>
-                            @endif
+                    @if (Route::has('tasks.add'))
+                        <a href="{{ route('tasks.add') }}">
+                            <button class="cursor-pointer text-sm bg-green-600 text-white p-1.5 rounded-lg hover:bg-green-500">
+                                Add New Task
+                            </button>
+                        </a>
+                    @endif
+                </div>
+                <table class="w-full text-sm text-left">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="bg-[#202020] text-white border-2 border-white p-2 w-1/12">ID</th>
+                            <th class="bg-[#202020] text-white border-2 border-white p-2 w-4/12">Title</th>
+                            <th class="bg-[#202020] text-white border-2 border-white p-2 w-3/12">Description</th>
+                            <th class="bg-[#202020] text-white border-2 border-white p-2 w-2/12">Deadline</th>
+                            <th class="bg-[#202020] text-white border-2 border-white p-2 w-2/12">Actions</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($tasks as $t)
+                        <tr>
+                            <td class="border-b-2 border-black p-2 text-center">
+                                {{ $t->id }}
+                            </td>
+                            <td class="border-b-2 border-black p-2">
+                                {{ strlen($t->title) > 60 ? trim(substr($t->title, 0, 60)) . "..." : $t->title }}
+                                <br class="mb-1" />
+                                @if ($t->status == 'completed')
+                                    <span class="bg-emerald-600 py-1 px-2 text-white rounded-full">Completed</span>
+                                @elseif ($t->status == 'progress')
+                                    <span class="bg-amber-600 py-1 px-2 text-white rounded-full">In Progress</span>
+                                @elseif ($t->status == 'pending')
+                                    <span class="bg-red-600 py-1 px-2 text-white rounded-full">Pending</span>
+                                @endif
+                            </td>
+                            <td class="border-b-2 border-black p-2">
+                                {{ strlen($t->description) > 80 ? trim(substr($t->description, 0, 80)) . "..." : 
+                                $t->description }}
+                            </td>
+                            <td class="border-b-2 border-black p-2">
+                                {{ Carbon\Carbon::parse($t->deadline)->format('d M Y, H:i:s') }}
+                            </td>
+                            <td class="border-b-2 border-black p-2 select-none text-center">
+                                @if (Route::has('tasks.edit'))
+                                    <a href="{{ route('tasks.edit', $t->id) }}">
+                                        <button class="w-5/12 cursor-pointer bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-500">
+                                            Edit
+                                        </button>
+                                    </a>
+                                @endif
+
+                                @if (Route::has('tasks.delete'))
+                                    <form action="{{ route('tasks.delete', $t->id) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="w-5/12 cursor-pointer bg-red-600 text-white p-1.5 rounded-lg hover:bg-red-500">Delete</button>
+                                    </form>
+                                @endif
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </main>
         </div>
     </body>
 </html>
