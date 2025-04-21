@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Login | ABC Corp. Task Management</title>
+        <title>Staffs | ABC Corp. Task Management</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -50,14 +50,38 @@
         </header>
         <div class="container p-6 lg:p-8 rounded-lg">
             <h1 class="text-3xl lg:text-5xl font-bold text-[#1b1b18] dark:text-[#EDEDEC] mb-2 lg:mb-4">
-                Dashboard
+                All Staffs
             </h1>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-[#202020] p-4 rounded-lg shadow-lg">
-                    <h2 class="text-xl font-semibold text-[#EDEDEC]">Staff Members</h2>
-                    <p class="text-3xl font-bold text-[#EDEDEC]">{{ $staff }}</p>
-                </div>
-            </div>
+            <table class="w-full text-sm text-left">
+                <thead>
+                    <tr class="text-center">
+                        <th class="bg-[#202020] text-white border-2 border-white p-2 w-1/12">ID</th>
+                        <th class="bg-[#202020] text-white border-2 border-white p-2 w-5/12">Name</th>
+                        <th class="bg-[#202020] text-white border-2 border-white p-2 w-4/12">E-mail</th>
+                        <th class="bg-[#202020] text-white border-2 border-white p-2 w-2/12">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($staff as $s)
+                        <tr>
+                            <td class="border-b-2 border-black p-2">{{ $s->id }}</td>
+                            <td class="border-b-2 border-black p-2">{{ $s->name }}</td>
+                            <td class="border-b-2 border-black p-2">{{ $s->email }}</td>
+                            <td class="border-b-2 border-black p-2 text-center">
+                                <a href="{{ route('staff.edit', $s->id) }}">
+                                    <button class="w-5/12 bg-blue-600 text-white p-1.5 rounded-lg hover:bg-blue-500">
+                                        Edit
+                                    </button>
+                                </a>
+                                <form action="{{ route('staff.delete', $s->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-5/12 bg-red-600 text-white p-1.5 rounded-lg hover:bg-red-500">Delete</button>
+                                </form>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </body>
 </html>
