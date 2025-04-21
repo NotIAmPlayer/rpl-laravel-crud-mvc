@@ -22,21 +22,21 @@
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
         <header class="w-full max-w-screen max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             <nav class="flex items-center justify-end gap-4 bg-[#202020]">
+                @if (Route::has('dashboard'))
                 <a
-                    href="#"
+                    href="{{ route('dashboard') }}"
                     class="inline-block px-5 py-1.5 text-[#EDEDEC] hover:bg-linear-to-b from-black/0 to-violet-900 rounded-sm text-sm leading-normal"
                 >
                     Dashboard
                 </a>
-
-                @if (Route::has('staff'))
-                    <a
-                        href="{{ route('staff') }}"
-                        class="inline-block px-5 py-1.5 text-[#EDEDEC] hover:bg-linear-to-b from-black/0 to-violet-900 rounded-sm text-sm leading-normal"
-                    >
-                        Staffs
-                    </a>
                 @endif
+
+                <a
+                    href="#"
+                    class="inline-block px-5 py-1.5 text-[#EDEDEC] hover:bg-linear-to-b from-black/0 to-violet-900 rounded-sm text-sm leading-normal"
+                >
+                    Staffs
+                </a>
 
                 @if (Route::has('tasks'))
                     <a
@@ -56,10 +56,6 @@
                 <div class="bg-[#202020] p-4 rounded-lg shadow-lg">
                     <h2 class="text-xl font-semibold text-[#EDEDEC]">Staff Members</h2>
                     <p class="text-3xl font-bold text-[#EDEDEC]">{{ $staff }}</p>
-                </div>
-                <div class="bg-[#202020] p-4 rounded-lg shadow-lg">
-                    <h2 class="text-xl font-semibold text-[#EDEDEC]">Active Tasks</h2>
-                    <p class="text-3xl font-bold text-[#EDEDEC]">{{ $tasks }}</p>
                 </div>
             </div>
         </div>

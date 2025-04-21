@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class StaffController extends Controller
 {
     public function index() {
-        $staff = DB::table('users')->get();
+        $staff = DB::table('users')->get(['id', 'name', 'email']);
 
         return view('staff', ['staff' => $staff]);
     }
